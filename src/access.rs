@@ -254,26 +254,27 @@ impl JiraInstance {
         let results = self
             .authenticated_get(&url)
             .await?
-            .json::<serde_json::Value>()
+            .json::<JqlResults>()
             .await?;
-        let issues = results.get("issues").unwrap().as_array().unwrap();
-        for issue in issues {
-            let fields = issue.get("fields").unwrap().as_object().unwrap();
 
-            let user = fields.get("creator");
-            println!("creator==={user:#?}");
+        // let issues = results.get("issues").unwrap().as_array().unwrap();
+        // for issue in issues {
+        //     let fields = issue.get("fields").unwrap().as_object().unwrap();
 
-            let status_category = fields.get("reporter");
-            println!("reporter==={status_category:#?}");
+        //     let user = fields.get("creator");
+        //     println!("creator==={user:#?}");
 
-            let project = fields.get("assignee");
-            println!("assignee==={project:#?}");
-        }
+        //     let status_category = fields.get("reporter");
+        //     println!("reporter==={status_category:#?}");
+
+        //     let project = fields.get("assignee");
+        //     println!("assignee==={project:#?}");
+        // }
 
         // println!("{:#?}", results);
         log::debug!("{:#?}", results);
 
-        let results: JqlResults = serde_json::from_value(results).unwrap();
+        // let results: JqlResults = serde_json::from_value(results).unwrap();
 
         Ok(results.issues)
     }
